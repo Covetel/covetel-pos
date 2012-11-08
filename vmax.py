@@ -287,8 +287,8 @@ class Vmax:
 
         comando_descripcion = descripcion[:20]+" "*(20-len(descripcion))
         precio_limpio = precio.replace('.','').replace(',','')
-        comando_precio = precio_limpio[:10]+" "*(10-len(descripcion))
-        self.ser.write('\x02'+'N1'+comando_descripcion+comando_precio+'1'+'\x03')
+        comando_precio = "0"*(10-len(precio_limpio))+precio_limpio[:10]
+        self.ser.write('\x02\x4E'+'1'+comando_descripcion+comando_precio+'1'+'\x03')
         impresora.ser.flush()
         time.sleep(0.3)
 
@@ -301,7 +301,7 @@ class Vmax:
         time.sleep(2)
         comando_descripcion = descripcion[:20]+" "*(20-len(descripcion))
         monto_limpio = monto.replace('.','').replace(',','')
-        comando_monto = monto_limpio[:12]+" "*(12-len(descripcion))
+        comando_monto = "0"*(12-len(monto_limpio))+monto_limpio[:12]
         self.ser.write('\x02\x50\x01'+comando_descripcion+comando_monto+'\x03')
         impresora.ser.flush()
         time.sleep(2)
