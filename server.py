@@ -37,7 +37,9 @@ class PosPrintServer(object):
         if comando[0] == 'CERRAR1':
             print "Cerrando comprobante"
             self.impresora.cerrar_comprobante()
-
+        if comando[0] == 'GAVETA':
+            print "Abriendo gaveta"
+            self.impresora.gaveta()
 
 
         start_response('200 OK', [('Content-Type', 'text/plain')])

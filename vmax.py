@@ -266,14 +266,16 @@ class Vmax:
         self.ser.write('\x02\x62\x03')
 
     def imprimir_z(self):
-        """ Permite reiniciar la impresora fiscal sin necesidad de apagarla.
-            """
         self.ser.write('\x02\x5a\x03')
 
     def imprimir_x(self):
-        """ Permite reiniciar la impresora fiscal sin necesidad de apagarla.
-            """
         self.ser.write('\x02\x58\x03')
+
+
+    def gaveta(self):
+        """ Manda una señal por el puerto de 'DK' de la impresora fiscal  
+            """
+        self.ser.write('\x02\x5D\x03')
 
 
     def venta_articulo(self,descripcion,precio,impuesto='1'):
