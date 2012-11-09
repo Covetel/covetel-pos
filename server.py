@@ -15,12 +15,30 @@ class PosPrintServer(object):
         self.impresora = Vmax()
 
     def bridge(self, env, start_response):
+        print "atendiendo:",env['PATH_INFO']
 
-        comando,argumentos= env['PATH_INFO'][1:].split("___")
-        argumentos = argumentos.split('_-_')
-        if comando == 'INICIAR':
+        comando= env['PATH_INFO'][1:].split("___")
+        if comando[0] == 'RESET':
             print "Enviando comando de RESET"
             self.impresora.reset()
+        if comando[0] == 'ABRIR1':
+            print "Abriendo comprobante fiscal"
+            self.impresora.abrir_comprobante_fiscal()
+        if comando[0] == 'PRODUCTO':
+            print "Enviando producto"
+            self.impresora.abrir_comprobante_fiscal()
+            self.impresora.venta_articulo(comando[1],comando[2])
+        if comando[0] == 'SUBTOTAL':
+            print "Enviando Subtotal"
+            self.impresora.subtotal()
+        if comando[0] == 'PAGO':
+            print "Enviando pago"
+            self.impresora.pago(comando[1],comando[2])
+        if comando[0] == 'CERRAR1':
+            print "Cerrando comprobante"
+            self.impresora.cerrar_comprobante()
+
+
 
         start_response('200 OK', [('Content-Type', 'text/plain')])
         return ['OK\r\n']

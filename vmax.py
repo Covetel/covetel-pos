@@ -91,7 +91,8 @@ class Vmax:
             print "\nSTATUS DE VENTA"
             print "==============="
             print "- Comprobante fiscal abierto:"
-            print "  1:Comprobante fiscal abierto" if check_bandera(revisando,7) else "  0:No hay comprobante fiscal abierto"
+            print "  1:Comprobante fiscal abierto" if check_bandera(revisando,7) else \
+                    "  0:No hay comprobante fiscal abierto"
             print "- Comando de venta efectuado:"
             print "  1:Articulo vendido" if check_bandera(revisando,6) else "  0:Articulo no vendido"
             print "- Subtotal Realizado:"
@@ -101,7 +102,8 @@ class Vmax:
             print "- Comando de pago efectuado:"
             print "  1:Efectuado" if check_bandera(revisando,3) else "  0:No efectuado"
             print "- Comprobante NO Fiscal abierto "
-            print "  1:Comprobante NO Fiscal abierto" if check_bandera(revisando,2) else "  0:No hay comprobante no Fiscal en curso"
+            print "  1:Comprobante NO Fiscal abierto" if check_bandera(revisando,2) else \
+                    "  0:No hay comprobante no Fiscal en curso"
             print "- Periodo de Ventas Empezado"
             print "  1:Periodo comenzado" if check_bandera(respuesta[1],2) else "  0:Periodo nuevo"
 
@@ -148,7 +150,8 @@ class Vmax:
             print "- Reporte de Memoria:"
             print "  1:Realizando reporte de memoria" if check_bandera(revisando,5) else "  0:En otra operacion"
             print "- Primer articulo vendido:"
-            print "  1:Primer articulo vendido" if check_bandera(revisando,4) else "  0:Primer articulo sin vender"
+            print "  1:Primer articulo vendido" if check_bandera(revisando,4) else \
+                    "  0:Primer articulo sin vender"
             print "- Devolucion:"
             print "  1:Efectuada" if check_bandera(revisando,3) else "  0:No Efectuada"
             print "- Pago parcial realizado:"
@@ -189,13 +192,13 @@ class Vmax:
             """
         self.ser.write('\x02\x4c'+'01'+'\x03')
         time.sleep(0.3)
-        impresora.ser.flush()
+        self.ser.flush()
 
 
     def reset(self):
         self.ser.write('\x02\x62\x03')
         time.sleep(0.3)
-        impresora.ser.flush()
+        self.ser.flush()
 
 
 
@@ -204,7 +207,7 @@ class Vmax:
             """
         self.ser.write('\x02\x53\x03')
         time.sleep(0.3)
-        impresora.ser.flush()
+        self.ser.flush()
 
 
     def linea_en_blanco(self):
@@ -212,18 +215,18 @@ class Vmax:
             """
         self.ser.write('\x02\x53\x03')
         time.sleep(0.3)
-        impresora.ser.flush()
+        self.ser.flush()
 
 
     def abrir_gaveta(self):
         self.ser.write('\x02\x5d\x03')
         time.sleep(0.3)
-        impresora.ser.flush()
+        self.ser.flush()
 
 
     def escribir_linea(self,cadena):
         self.ser.write('\x02\x56'+cadena+'\x03')
-        impresora.ser.flush()
+        self.ser.flush()
         time.sleep(0.3)
 
 
@@ -240,7 +243,7 @@ class Vmax:
         """Calcular subtotal de la venta
             """
         self.ser.write('\x02'+'Ox'+'\x03')
-        impresora.ser.flush()
+        self.ser.flush()
         time.sleep(0.3)
 
     def anular_comprobante(self):
@@ -248,14 +251,14 @@ class Vmax:
             """
         self.ser.write('\x02\x51\x03')
         time.sleep(0.3)
-        impresora.ser.flush()
+        self.ser.flush()
 
     def cerrar_comprobante(self):
         """Cerrar un comprobante fiscal en curso si se ha realizado un pago completo
             """
         self.ser.write('\x02\x4D\x03')
         time.sleep(0.3)
-        impresora.ser.flush()
+        self.ser.flush()
 
     def reset(self):
         """ Permite reiniciar la impresora fiscal sin necesidad de apagarla.
@@ -273,7 +276,7 @@ class Vmax:
         self.ser.write('\x02\x58\x03')
 
 
-    def venta_articulo(self,descripcion,precio,impuesto=0):
+    def venta_articulo(self,descripcion,precio,impuesto='1'):
         """Venta de articulo
             codigo: 4e
             1:      1=Venta  0=Anulacion
@@ -288,8 +291,8 @@ class Vmax:
         comando_descripcion = descripcion[:20]+" "*(20-len(descripcion))
         precio_limpio = precio.replace('.','').replace(',','')
         comando_precio = "0"*(10-len(precio_limpio))+precio_limpio[:10]
-        self.ser.write('\x02\x4E'+'1'+comando_descripcion+comando_precio+'1'+'\x03')
-        impresora.ser.flush()
+        self.ser.write('\x02\x4E'+'1'+comando_descripcion+comando_precio+impuesto+'\x03')
+        self.ser.flush()
         time.sleep(0.3)
 
 
@@ -303,7 +306,7 @@ class Vmax:
         monto_limpio = monto.replace('.','').replace(',','')
         comando_monto = "0"*(12-len(monto_limpio))+monto_limpio[:12]
         self.ser.write('\x02\x50\x01'+comando_descripcion+comando_monto+'\x03')
-        impresora.ser.flush()
+        self.ser.flush()
         time.sleep(2)
 
 
@@ -316,6 +319,8 @@ if __name__ == '__main__':
     for each in range(7):
         print each
         impresora.venta_articulo('prueba'+str(each),str(each*100+50))
+
+    impresora.venta_articulo('prueba'+str(each)+'exento',str(each*100+50),impuesto='0')
     time.sleep(2)
     print "Subtotal"
     impresora.subtotal()
