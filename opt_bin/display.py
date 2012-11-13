@@ -16,6 +16,7 @@ class PosDisplay(object):
         #self.ser = serial.Serial(2,baudrate=9600,bytesize=8, parity='N', timeout = None, stopbits=2, xonxoff=1, rtscts=1)
         #self.ser = serial.Serial(2,baudrate=9600,parity='N',bytesize=8,stopbits=1)
         self.ser = serial.Serial(2,baudrate=9600)
+        self.ser.write(" "*42)
         self.enviar_a_leds("OpenERP 6.1","PDVAL S.A.")
 
     def enviar_a_leds(self,linea1,linea2):
