@@ -22,11 +22,11 @@ class PosDisplay(object):
     def enviar_a_leds(self,linea1,linea2):
         for each in "\r"+linea1[:19]+"\n":
             self.ser.write(each)
-            time.sleep(0.007)
+            time.sleep(0.001)
         
         for each in "\r"+" "*(20-len(linea2))+linea2:
             self.ser.write(each)
-            time.sleep(0.007)
+            time.sleep(0.001)
 
 
     
