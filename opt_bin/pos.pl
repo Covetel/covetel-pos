@@ -1,6 +1,9 @@
 #!/usr/bin/perl 
 use Proc::Daemon; 
 use common::sense;
+use LWP::UserAgent;
+
+my $ua = LWP::UserAgent->new;
 
 my $arg = shift || die "Usage: {start|stop|status}";
 
@@ -33,6 +36,7 @@ given ($arg) {
             my $pid = start $daemon->{$_} unless status $daemon->{$_};
             printf "Starting [%s]\n", $daemon->{$_}->{'name'} if $pid;
           }
+          $ua->get("http://127.0.0.1:8100/OpenERP%206.1___PDVAL%20S.A.");
   }
   when (/stop/){
           foreach (keys %{$daemon}){
