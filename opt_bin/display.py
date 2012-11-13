@@ -33,7 +33,7 @@ class PosDisplay(object):
         self.ser.write(" "*42)
         linea1,linea2 = env['PATH_INFO'][1:].split("___")
 
-        enviar_a_leds(linea1,linea2)
+        self.enviar_a_leds(linea1,linea2)
 
         start_response('200 OK', [('Content-Type', 'text/plain')])
         return ['OK\r\n']
