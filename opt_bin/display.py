@@ -17,17 +17,17 @@ class PosDisplay(object):
         self.ser = serial.Serial(2,baudrate=9600,parity='N',bytesize=8,stopbits=1)
         #self.ser = serial.Serial(2,baudrate=9600)
         self.ser.write(" "*42)
-        self.enviar_a_leds("OpenERP 6.1","PDVAL S.A.")
+        self.enviar_a_leds("OpenERP 6.1","PDVAL S.A.",0.1)
 
-    def enviar_a_leds(self,linea1,linea2):
+    def enviar_a_leds(self,linea1,linea2,timeout=0.001):
         for each in "\r"+linea1[:18]+"\n":
             self.ser.write(each)
-            time.sleep(0.001)
+            time.sleep(timeout)
 
         linea2 = linea2[:18]
         for each in "\r"+" "*(20-len(linea2))+linea2:
             self.ser.write(each)
-            time.sleep(0.001)
+            time.sleep(timeout)
 
 
     
