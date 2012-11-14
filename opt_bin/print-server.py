@@ -39,9 +39,10 @@ class PosPrintServer(object):
                     self.impresora.reset()
                 if comando[0] == 'ABRIR1':
                     logging.info("Abriendo comprobante fiscal")
-                    num = self.impresora.abrir_comprobante_fiscal()
-                    if num != None:
-                        self.ser = num 
+                    self.impresora.abrir_comprobante_fiscal()
+                    #num = self.impresora.abrir_comprobante_fiscal()
+                    #if num != None:
+                    #    self.ser = num 
                 if comando[0] == 'ABRIR2':
                     logging.info("Abriendo devolucion fiscal")
                     self.impresora.abrir_devolucion_fiscal()

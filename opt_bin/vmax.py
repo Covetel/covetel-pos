@@ -197,17 +197,17 @@ class Vmax:
             time.sleep(0.3)
             self.ser.flush()
             time.sleep(4)
-            string = ""
-            char = ''
-            while char != '*':
-                print char
-                char = self.ser.read(1)
-                #if char == "":
-                #    string = ""
-                string+=char 
-            print "Se ha abierto el comprobante",string[:-1] 
-            self.status = False
-            return string[:-1]
+            #string = ""
+            #char = ''
+            #while char != '*':
+            #    print char
+            #    char = self.ser.read(1)
+            #    if char == '':
+            #        string = ""
+            #    string+=char 
+            #print "Se ha abierto el comprobante",string[:-1] 
+            #self.status = False
+            #return string[:-1]
 
     def abrir_devolucion_fiscal(self):
         """Abrir comprobante fiscal
