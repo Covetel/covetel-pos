@@ -30,6 +30,7 @@ def check_bandera(number,pos):
 
 class Vmax:
     def __init__(self):
+        self.status = True 
         possible_ports = glob.glob('/dev/ttyS*')
         for each in ['/dev/ttyUSB0']+range(0,6):
             try:
@@ -190,10 +191,23 @@ class Vmax:
             Estado actual:  Inicio de Venta
                             Inicio de Devolucion
             """
-        self.ser.write('\x02\x4c'+'00'+'\x03')
-        time.sleep(0.3)
-        self.ser.flush()
-        time.sleep(4)
+        if self.status:
+            print "Abriendo comprobante"
+            self.ser.write('\x02\x4c'+'&0'+'\x03')
+            time.sleep(0.3)
+            self.ser.flush()
+            time.sleep(4)
+            string = ""
+            char = ''
+            while char != '*':
+                print char
+                char = self.ser.read(1)
+                #if char == "":
+                #    string = ""
+                string+=char 
+            print "Se ha abierto el comprobante",string[:-1] 
+            self.status = False
+            return string[:-1]
 
     def abrir_devolucion_fiscal(self):
         """Abrir comprobante fiscal
@@ -214,7 +228,13 @@ class Vmax:
         time.sleep(0.2)
         self.ser.flush()
         time.sleep(4)
+        self.status = True
 
+
+    def avance_linea(self):
+        self.ser.write('\x02\x55\x03')
+        time.sleep(0.2)
+        self.ser.flush()
 
 
     def abrir_comprobante_no_fiscal(self):
@@ -267,6 +287,7 @@ class Vmax:
         self.ser.write('\x02\x51\x03')
         time.sleep(0.3)
         self.ser.flush()
+        self.status = True
 
     def cerrar_comprobante(self):
         """Cerrar un comprobante fiscal en curso si se ha realizado un pago completo
@@ -275,6 +296,7 @@ class Vmax:
         time.sleep(0.3)
         self.ser.flush()
         time.sleep(3)
+        self.status = True
 
     def imprimir_z(self):
         self.ser.write('\x02\x5a\x03')

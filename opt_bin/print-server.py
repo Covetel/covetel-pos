@@ -22,6 +22,7 @@ class PosPrintServer(object):
         t.daemon = True
         t.start()
         logging.info('PosPrintServer inicializado')
+        self.ser = "OK"
 
     def worker(self):
         while True:
@@ -38,7 +39,9 @@ class PosPrintServer(object):
                     self.impresora.reset()
                 if comando[0] == 'ABRIR1':
                     logging.info("Abriendo comprobante fiscal")
-                    self.impresora.abrir_comprobante_fiscal()
+                    num = self.impresora.abrir_comprobante_fiscal()
+                    if num != None:
+                        self.ser = num 
                 if comando[0] == 'ABRIR2':
                     logging.info("Abriendo devolucion fiscal")
                     self.impresora.abrir_devolucion_fiscal()
@@ -57,8 +60,21 @@ class PosPrintServer(object):
                 if comando[0] == 'PAGO':
                     logging.info("Enviando pago")
                     self.impresora.pago(comando[1],comando[2])
+                if comando[0] == 'BLANCO':
+                    self.impresora.avance_linea()
+                if comando[0] == 'ESCRIBIR':
+                    logging.info("ESCRIBIENDO: "+comando[1])
+                    self.impresora.escribir_linea(comando[1])
                 if comando[0] == 'CERRAR1':
                     logging.info("Cerrando comprobante")
+                    tweet = "Felicito a los y las Graduandas del I Cohorte del Diplomado en Saberes Africanos! Viva la Madre Africa!! " 
+                    self.impresora.avance_linea()
+                    self.impresora.escribir_linea("@chavezcandanga:")
+                    self.impresora.escribir_linea(tweet[:40])
+                    self.impresora.escribir_linea(tweet[40:80])
+                    self.impresora.escribir_linea(tweet[80:120])
+                    self.impresora.escribir_linea(tweet[120:160])
+                    
                     self.impresora.cerrar_comprobante()
                 if comando[0] == 'GAVETA':
                     logging.info("Abriendo Gaveta")
@@ -81,7 +97,7 @@ class PosPrintServer(object):
             start_response('200 OK', [('Content-Type', 'text/plain')])
         except:
             logging.warning('Bridge ERROR processing:'+env['PATH_INFO'])
-        return ['OK\r\n']
+        return [str(self.ser)+'\r\n']
 
     def run(self):
         wsgi.server(eventlet.listen(('', 8200)), self.bridge)
