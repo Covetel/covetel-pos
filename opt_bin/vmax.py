@@ -190,15 +190,28 @@ class Vmax:
             Estado actual:  Inicio de Venta
                             Inicio de Devolucion
             """
-        self.ser.write('\x02\x4c'+'01'+'\x03')
+        self.ser.write('\x02\x4c'+'00'+'\x03')
+        time.sleep(0.3)
+        self.ser.flush()
+        time.sleep(4)
+
+    def abrir_devolucion_fiscal(self):
+        """Abrir comprobante fiscal
+            Modifica la Bandera: Comprobante fiscal abierto (activa)
+            Estado permitido: Espera
+            Estado actual:  Inicio de Venta
+                            Inicio de Devolucion
+            """
+        self.ser.write('\x02\x4c'+'02'+'\x03')
         time.sleep(0.3)
         self.ser.flush()
         time.sleep(4)
 
 
+
     def reset(self):
         self.ser.write('\x02\x62\x03')
-        time.sleep(0.3)
+        time.sleep(0.2)
         self.ser.flush()
         time.sleep(4)
 
@@ -306,6 +319,26 @@ class Vmax:
         self.ser.write('\x02\x4E'+'0'+comando_descripcion+comando_precio+impuesto+'\x03')
         self.ser.flush()
         time.sleep(0.3)
+
+
+    def devolucion_articulo(self,descripcion,precio,impuesto='1'):
+        """Venta de articulo
+            codigo: 4e
+            1:      1=Venta  0=Anulacion
+            20:     Descripcion
+            10:     Precio
+            1:      Impuesto 0=Exento 1     
+
+
+            TODO: Optimizar para impresion rapida
+            """
+
+        comando_descripcion = descripcion[:20]+" "*(20-len(descripcion))
+        precio_limpio = precio.replace('.','').replace(',','')
+        comando_precio = "0"*(10-len(precio_limpio))+precio_limpio[:10]
+        self.ser.write('\x02\x52'+'1'+comando_descripcion+comando_precio+impuesto+'\x03')
+        self.ser.flush()
+        time.sleep(0.33)
 
 
 

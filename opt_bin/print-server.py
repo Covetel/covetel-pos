@@ -36,17 +36,21 @@ class PosPrintServer(object):
                 if comando[0] == 'RESET':
                     logging.info("Enviando comando de RESET")
                     self.impresora.reset()
-                    logging.info("Abriendo comprobante fiscal")
-                    self.impresora.abrir_comprobante_fiscal()
                 if comando[0] == 'ABRIR1':
                     logging.info("Abriendo comprobante fiscal")
                     self.impresora.abrir_comprobante_fiscal()
+                if comando[0] == 'ABRIR2':
+                    logging.info("Abriendo devolucion fiscal")
+                    self.impresora.abrir_devolucion_fiscal()
                 if comando[0] == 'PRODUCTO':
                     logging.info("Enviando producto")
                     self.impresora.venta_articulo(comando[1],comando[2])
                 if comando[0] == 'ANULACION':
                     logging.info("Enviando producto")
                     self.impresora.anulacion_articulo(comando[1],comando[2])
+                if comando[0] == 'DEVOLUCION':
+                    logging.info("Enviando producto a devolver")
+                    self.impresora.devolucion_articulo(comando[1],comando[2])
                 if comando[0] == 'SUBTOTAL':
                     logging.info("Enviando Subtotal")
                     self.impresora.subtotal()
