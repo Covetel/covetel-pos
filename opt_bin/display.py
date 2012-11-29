@@ -41,9 +41,9 @@ class PosDisplay(object):
     def enviar_a_leds(self,linea1,linea2):
 #        self.ser.write(" "*40)
         self.ser.write(linea1[:19]+"\r\n")
-        time.sleep(0.01)
+        #time.sleep(0.0001)
         self.ser.write(linea2[:19]+"\r\n")
-        time.sleep(0.01)
+        #time.sleep(0.0001)
         self.ser.flush()
         #for each in linea2[:18]+"\r\n":
         #    self.ser.write(each)
@@ -54,11 +54,8 @@ class PosDisplay(object):
         start_response('200 OK', [('Content-Type', 'text/plain')])
         return ['OK\r\n']
 
-    def worker(self):
-        while True:
-            trabajo = self.q.get()
-            linea1,linea2 = trabajo.split("___") 
-
+    def previous_worker():
+        if False:
             for each in range(20):
                 render1 = self.prev1[each:-1]+linea1[:20-(20-each)]+" "
                 if len(render1)<19:
@@ -70,12 +67,21 @@ class PosDisplay(object):
                     espacio_render2 = " "*(19-len(render2))
                 else:
                     espacio_render2 = ""
-                print render1
-                print render2
+                #print render1
+                #print render2
 
-                self.enviar_a_leds(render1,render2)
-            self.prev1 = render1+" "*(19-len(render1))
-            self.prev2 = render2+" "*(19-len(render2))
+        #        if each%20==0:
+
+
+
+    def worker(self):
+        while True:
+            trabajo = self.q.get()
+            linea1,linea2 = trabajo.split("___") 
+            self.enviar_a_leds(linea1+" "*20,linea2+" "*20)
+            #self.prev1 = render1+" "*(19-len(render1))
+            #self.prev2 = render2+" "*(19-len(render2))
+            time.sleep(0.5)
 
             self.q.task_done()
         
