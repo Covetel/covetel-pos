@@ -2,9 +2,9 @@
 
 *** USAGE
 
-Symbolic link of  opt_bin to /opt/covetel/pos/bin
+Symbolic link of  opt_bin to =/opt/covetel/pos/bin=
 
-Symbolic link of init_pos to /etc/init.d/pos
+Symbolic link of init_pos to =/etc/init.d/pos=
 
 *** REQUIREMENTS
 
