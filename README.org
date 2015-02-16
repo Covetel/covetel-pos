@@ -10,6 +10,5 @@ Symbolic link of init_pos to =/etc/init.d/pos=
 
 - *Proc::Daemon*
 
-#+begin_bash
   aptitude install libproc-daemon-perl 
-#+end_bash
+
