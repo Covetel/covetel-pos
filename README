@@ -1,17 +1,13 @@
-=head1 PDVAL POS
+** POS
 
-=head2 USAGE
+*** USAGE
 
 Symbolic link of  opt_bin to /opt/covetel/pos/bin
 
 Symbolic link of init_pos to /etc/init.d/pos
 
-=head2 REQUIREMENTS
+*** REQUIREMENTS
 
-=over
-
-=item Proc::Daemon
+- Proc::Daemon
     
   aptitude install libproc-daemon-perl 
-
-=back
