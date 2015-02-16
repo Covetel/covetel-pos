@@ -8,6 +8,6 @@ Symbolic link of init_pos to =/etc/init.d/pos=
 
 *** REQUIREMENTS
 
-- Proc::Daemon
+- *Proc::Daemon*
     
   aptitude install libproc-daemon-perl 
